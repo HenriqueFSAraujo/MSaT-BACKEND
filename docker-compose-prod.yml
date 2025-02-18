@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  db-postgres-gestao-garantias:
+    image: postgres
+    container_name: db-postgres-gestao-garantias-prod
+    hostname: db-postgres-gestao-garantias-prod
+    restart: unless-stopped
+    volumes:
+      - /data/prod/gestao-garantias:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PROD12345
+    ports:
+      - "5432:5432"  
+    networks:
+      - prod-gestao-garantias-network
+
+  garantias-api:
+    build: .
+    restart: always
+    container_name: garantias-api-prod
+    ports:
+      - "8080:8080"
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - prod-gestao-garantias-network  
+
+  module-oauth:
+    build: ./module-oauth
+    restart: always
+    container_name: module-oauth-prod
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - prod-gestao-garantias-network  
+
+networks: 
+  prod-gestao-garantias-network:
+    driver: bridge
