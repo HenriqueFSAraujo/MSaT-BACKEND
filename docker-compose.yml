@@ -1,4 +1,4 @@
-version: '3.9'
+
 
 services:
   db-postgres-gestao-garantias:
@@ -13,7 +13,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 12345
     ports:
-      - "5432:5432"  
+      - "5432:5432"
     networks:
       - dev-gestao-garantias-network
 
@@ -27,10 +27,10 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     networks:
-      - dev-gestao-garantias-network  
+      - dev-gestao-garantias-network
 
   module-oauth:
-    build: /home/ec2-user/MSaT-BACKEND/services/module-oauth
+    build: ./module-oauth  # Ajuste se necessário
     restart: always
     container_name: module-oauth-dev
     ports:
@@ -40,6 +40,6 @@ services:
     networks:
       - dev-gestao-garantias-network
 
-networks: 
+networks:
   dev-gestao-garantias-network:
     driver: bridge
