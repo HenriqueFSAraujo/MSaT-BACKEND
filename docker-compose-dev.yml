@@ -17,10 +17,10 @@ services:
     networks:
       - dev-gestao-garantias-network
 
-  garantias-api:
+  agostinianas-api:
     build: .
     restart: always
-    container_name: garantias-api-dev
+    container_name: agostinianas-api-dev
     ports:
       - "8080:8080"
       - "8082:8082"

@@ -1,22 +1,14 @@
-#Baixando imagem maven
-FROM maven:3.8.3-openjdk-17 AS builder
+FROM openjdk:17-jdk-slim
 
-#Criando diretorio e copiando informações
-WORKDIR /build
-COPY . /build
+WORKDIR /app
 
-# Generate build of the applicatin argument
-RUN mvn clean package
+# Copiar os dois arquivos JAR para o container
+COPY target/agostinianas-api.jar agostinianas-api.jar
+COPY target/module-oauth.jar module-oauth.jar
 
+# Expor as portas das aplicações
+EXPOSE 8080 8082 8083
 
-#Baixar imagem java
-FROM openjdk:17.0.1-jdk-slim
+# Comando para rodar as duas aplicações simultaneamente
+CMD java -jar garantias-api.jar & java -jar module-oauth.jar
 
-#Mover jar para diretorio criado
-COPY --from=builder /build/target/*.jar /garantias-api.jar
-
-#Executar comando para startar aplicação
-ENTRYPOINT ["java","-jar","garantias-api.jar"]
-
-#Expor porta de acesso
-EXPOSE 8080 8082
